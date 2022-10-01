@@ -18,7 +18,7 @@
   <img src="https://media.giphy.com/media/SWoSkN6DxTszqIKEqv/giphy.gif" width="450" height="250"/>
 </div>
 
-- :telescope: I’m working as a Software Engineer and contributing to frontend and backend for building web applications.
+- :telescope: .
 
 - :seedling: Exploring Other Techstacks
 
