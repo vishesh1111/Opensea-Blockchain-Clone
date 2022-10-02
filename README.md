@@ -1,6 +1,11 @@
-<div id="header" align="center">
-    <img src="https://media.giphy.com/media/f3iwJFOVOwuy7K6FFw/giphy.gif" width="240"></img>
-</div>
+![Screenshot 2022-10-01 174526](https://user-images.githubusercontent.com/106264088/193434280-291d8704-4aec-490c-b0f1-e4115f0a9a77.png)
+
+
+
+
+
+
+
 
 <div id="badges" align="center">
   <a href="https://www.linkedin.com/in/vishesh-verma-016351202/">
@@ -14,11 +19,9 @@
   </a>
 </div>
 
-<div align="center">
-  <img src="https://media.giphy.com/media/SWoSkN6DxTszqIKEqv/giphy.gif" width="450" height="250"/>
-</div>
 
-- :telescope: .
+
+
 
 - :seedling: Exploring Other Techstacks
 
@@ -28,7 +31,7 @@
 
 
 
-<div>
+<div alighn="center">
   <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original-wordmark.svg" title="React" alt="React" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/materialui/materialui-original.svg" title="Material UI" alt="Material UI" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/redux/redux-original.svg" title="Redux" alt="Redux " width="40" height="40"/>&nbsp;
@@ -40,5 +43,6 @@
   <img src="https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-original-wordmark.svg" title="NodeJS" alt="NodeJS" width="40" height="40"/>&nbsp;
   <img src="https://github.com/devicons/devicon/blob/master/icons/git/git-original-wordmark.svg" title="Git" **alt="Git" width="40" height="40"/>
 </div>
+
 
 
