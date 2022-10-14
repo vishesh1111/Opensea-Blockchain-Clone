@@ -25,7 +25,7 @@
 
 - :seedling: Exploring Other Techstacks
 
-- :zap: In my free time, I Sleep  
+
 
 - :mailbox:How to reach me: [vvishesh53@gmail.com])
 
