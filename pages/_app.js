@@ -2,10 +2,10 @@ import '../styles/globals.css'
 import { ThirdwebWeb3Provider } from '@3rdweb/hooks'
 
 /**
- * The chain ID 4 represents the Rinkeby network
+ * The chain ID 80001 represents the Mumbai network
  * The `injected` connector is a web3 connection method used by Metamask
  */
-const supportedChainIds = [4]
+const supportedChainIds = [80001]
 const connectors = {
   injected: {},
 }
