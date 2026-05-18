@@ -16,6 +16,11 @@ const style = {
   detailsContainer: `flex-[2] ml-4`,
 }
 
+// TODO: Move these to environment variables (NEXT_PUBLIC_NFT_COLLECTION_ADDRESS,
+// NEXT_PUBLIC_MARKETPLACE_ADDRESS) before deploying.
+const NFT_COLLECTION_ADDRESS = '0x66a576A977b7Bccf510630E0aA5e450EC11361Fa'
+const MARKETPLACE_ADDRESS = '0x93A771F7ce845C33381f677489cF21a5964EDD0b'
+
 const Nft = () => {
   const { provider } = useWeb3()
   const [selectedNft, setSelectedNft] = useState()
@@ -24,43 +29,43 @@ const Nft = () => {
 
   const nftModule = useMemo(() => {
     if (!provider) return
-
-    const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://eth-rinkeby.alchemyapi.io/v2/iXrUmXqNZXyAa116CV0Crlg1aF4FvlQc'
-    )
-    return sdk.getNFTModule('0x66a576A977b7Bccf510630E0aA5e450EC11361Fa')
+    const sdk = new ThirdwebSDK(provider.getSigner())
+    return sdk.getNFTModule(NFT_COLLECTION_ADDRESS)
   }, [provider])
 
-  // get all NFTs in the collection
+  // Get all NFTs in the collection and find the selected one
   useEffect(() => {
     if (!nftModule) return
     ;(async () => {
-      const nfts = await nftModule.getAll()
-
-      const selectedNftItem = nfts.find((nft) => nft.id === router.query.nftId)
-
-      setSelectedNft(selectedNftItem)
+      try {
+        const nfts = await nftModule.getAll()
+        // The dynamic route file is `[nftid].js`, so the param key is lowercase.
+        // Thirdweb v1 returns `id` as a BigNumber-like object, so coerce to string for comparison.
+        const targetId = router.query.nftid
+        const selectedNftItem = nfts.find(
+          (nft) => nft.id?.toString() === targetId
+        )
+        setSelectedNft(selectedNftItem)
+      } catch (err) {
+        console.error('Failed to fetch NFT:', err)
+      }
     })()
-  }, [nftModule])
+  }, [nftModule, router.query.nftid])
 
   const marketPlaceModule = useMemo(() => {
     if (!provider) return
-
-    const sdk = new ThirdwebSDK(
-      provider.getSigner(),
-      'https://eth-rinkeby.alchemyapi.io/v2/iXrUmXqNZXyAa116CV0Crlg1aF4FvlQc'
-    )
-
-    return sdk.getMarketplaceModule(
-      '0x93A771F7ce845C33381f677489cF21a5964EDD0b'
-    )
+    const sdk = new ThirdwebSDK(provider.getSigner())
+    return sdk.getMarketplaceModule(MARKETPLACE_ADDRESS)
   }, [provider])
 
   useEffect(() => {
     if (!marketPlaceModule) return
     ;(async () => {
-      setListings(await marketPlaceModule.getAllListings())
+      try {
+        setListings(await marketPlaceModule.getAllListings())
+      } catch (err) {
+        console.error('Failed to fetch listings:', err)
+      }
     })()
   }, [marketPlaceModule])
 

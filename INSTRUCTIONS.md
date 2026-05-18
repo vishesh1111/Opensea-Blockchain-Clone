@@ -1,60 +1,28 @@
-# OpenSea Clone - Setup Instructions
+# What was fixed
 
-## What was Fixed
+This document tracks the bug fixes applied to make the repo runnable.
 
-✅ **Updated Sanity Client API** - Fixed import from deprecated `sanityClient` to `createClient`
-✅ **Fixed async/await bug** - Added proper error handling for user creation
-✅ **Updated to Thirdweb SDK v5** - Migrated from deprecated v2 to latest v5
-✅ **Fixed network configuration** - Changed from deprecated Rinkeby to Mumbai/Polygon testnet
-✅ **Updated dependencies** - All packages updated to latest compatible versions
-✅ **Added React Query** - Required for Thirdweb SDK v5
-✅ **Fixed wallet connection** - Added proper wallet connect button functionality
+## Code bugs
 
-## Tech Stack
+1. **`pages/collections/[collectionid].js`** — the `nftModule` `useMemo` had unbalanced parens with code commented out mid-expression, causing a parse error. Sanity fetch was also commented out, and `setCollection(collectionId[0])` was setting state to the wrong value. Rewrote the page to be syntactically valid and to actually populate `collection` from Sanity.
+2. **`pages/nfts/[nftid].js`** — read `router.query.nftId` but the file is `[nftid].js`, so the param key is lowercase. Also Thirdweb v1 returns `id` as a BigNumber-like object, so the strict-equals comparison never matched. Fixed both.
+3. **`components/NFTCard.js`** — the component was empty (`return` with no JSX), so the collection grid rendered nothing. Implemented a proper card with image, title, and price.
+4. **`components/nft/ItemActivity.js`** — imported `./itemActivity/EventItem`, but the actual folder is `ItemActivity` (capital I and A). Builds break on case-sensitive filesystems (Linux, Vercel). Fixed the import path.
+5. **`static/dummyEvents.js`** — file was missing entirely, breaking the Item Activity panel. Added with sample data.
+6. **`pages/collections/[collectionid].js` & `[nftid].js`** — both pointed at hardcoded Rinkeby Alchemy URLs. Rinkeby is decommissioned. Removed those URLs; the Thirdweb v1 SDK now uses the wallet's current network.
 
-- **Next.js 13** - React framework
-- **Thirdweb SDK v5** - Web3 blockchain integration  
-- **Sanity CMS v6** - Content management
-- **Tailwind CSS** - Styling
-- **React Hot Toast** - Notifications
-- **React Icons** - UI icons
+## Config / security
 
-## Prerequisites
+7. **`lib/sanityClient.js`** — a Sanity write token was hardcoded and committed to the repo. Replaced with `process.env.SANITY_TOKEN` and added `.env.local.example`.
+8. **`tsconfig.json`** — `pages/index.js` was listed twice in `include`. Deduped.
+9. **`next.config.js`** — added image domains (`storage.opensea.io`, `i.seadn.io`, `cdn.sanity.io`, etc.) so the `<Image>` component doesn't error at runtime.
 
-1. **Node.js** (v18 or higher)
-2. **MetaMask** browser extension installed
-3. **npm** or **yarn**
+## Documentation
 
-## Installation & Run
+10. **`SETUP.md` / `INSTRUCTIONS.md`** — old docs claimed Thirdweb v5 / Sanity v6 / Mumbai testnet, none of which match the actual code (Thirdweb v1, Sanity v3, originally Rinkeby). Rewrote with the real stack and accurate setup steps.
 
-```bash
-# Navigate to project directory
-cd Opensea-Blockchain-Clone
+## Action items left for the user
 
-# Install dependencies
-npm install
-
-# Run development server
-npm run dev
-
-# Open browser at http://localhost:3000
-```
-
-## How to Use
-
-1. Click "Connect Wallet" button
-2. Select MetaMask wallet
-3. Connect your wallet (use Mumbai testnet)
-4. Browse the NFT marketplace
-
-## Supported Networks
-
-- **Mumbai Testnet** (Polygon) - Default
-- **Sepolia Testnet** (Ethereum)
-
-## Getting Testnet Tokens
-
-- Mumbai: https://mumbaifaucet.com/
-- Sepolia: https://sepoliafaucet.com/
-
-Enjoy! 🚀
+- **Rotate the Sanity token** that was previously committed in `lib/sanityClient.js` — assume it is compromised. Generate a new one in the Sanity dashboard.
+- **Replace contract addresses** in the page files with your own deployed contracts on a live testnet (Sepolia or Polygon Mumbai/Amoy).
+- Run `npm install` and `npm run dev` locally.
