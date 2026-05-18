@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { useWeb3 } from '@3rdweb/hooks'
 import openseaLogo from '../assets/opensea.png'
 import { AiOutlineSearch } from 'react-icons/ai'
 import { CgProfile } from 'react-icons/cg'
@@ -16,9 +17,21 @@ const style = {
   headerItems: ` flex items-center justify-end`,
   headerItem: `text-white px-4 font-bold text-[#c8cacd] hover:text-white cursor-pointer`,
   headerIcon: `text-[#8a939b] text-3xl font-black px-4 hover:text-white cursor-pointer`,
+  walletAddress: `text-[#8a939b] text-sm px-2 truncate max-w-[8rem]`,
 }
 
 const Header = () => {
+  const { address, connectWallet } = useWeb3()
+
+  const handleWalletClick = () => {
+    if (!address) {
+      connectWallet('injected')
+    }
+  }
+
+  const formatAddress = (addr) =>
+    addr ? `${addr.slice(0, 6)}...${addr.slice(-4)}` : ''
+
   return (
     <div className={style.wrapper}>
       <Link href="/">
@@ -38,17 +51,24 @@ const Header = () => {
       </div>
       <div className={style.headerItems}>
         <Link href="/collections/0x66a576A977b7Bccf510630E0aA5e450EC11361Fa">
-          <div className={style.headerItem}> Collections </div>
+          <div className={style.headerItem}>Collections</div>
         </Link>
-        <div className={style.headerItem}> Stats </div>
-        <div className={style.headerItem}> Resources </div>
-        <div className={style.headerItem}> Create </div>
+        <div className={style.headerItem}>Stats</div>
+        <div className={style.headerItem}>Resources</div>
+        <div className={style.headerItem}>Create</div>
         <div className={style.headerIcon}>
           <CgProfile />
         </div>
-        <div className={style.headerIcon}>
+        <div
+          className={style.headerIcon}
+          onClick={handleWalletClick}
+          title={address ? 'Wallet connected' : 'Connect wallet'}
+        >
           <MdOutlineAccountBalanceWallet />
         </div>
+        {address && (
+          <div className={style.walletAddress}>{formatAddress(address)}</div>
+        )}
       </div>
     </div>
   )

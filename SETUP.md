@@ -1,80 +1,71 @@
-# OpenSea Clone - Complete Setup Guide
+# OpenSea Clone — Setup Guide
 
-## ✅ All Issues Fixed!
+A Next.js + Thirdweb + Sanity OpenSea clone.
 
-### Bugs Fixed:
-1. ✅ **Sanity Client** - Updated to v6 API with proper imports
-2. ✅ **Thirdweb SDK** - Migrated from v2 to v5 
-3. ✅ **Wallet Connection** - Fixed ConnectWallet component
-4. ✅ **Async/Await** - Added proper error handling
-5. ✅ **Network Config** - Updated to Mumbai/Sepolia testnets
-6. ✅ **Image Issues** - Added alt props and image domains
-7. ✅ **Dependencies** - Updated all packages to latest stable versions
+## Tech Stack (actual versions)
 
-## 🚀 Quick Start
+- **Next.js** 12.3
+- **React** 18.1
+- **Thirdweb SDK v1** (`@3rdweb/sdk@1.42.1`, `@3rdweb/hooks@1.9.2`)
+- **Sanity Client v3** (`@sanity/client@3.3.5`) for the frontend
+- **Sanity Studio v2** (in `Studio/`) for content management
+- **Tailwind CSS** 3.1
+- **react-hot-toast**, **react-icons**
 
-### Step 1: Install Dependencies
+> Note: this repo targets the older Thirdweb v1 SDK. Newer Thirdweb tutorials use v5 and a completely different API (`createThirdwebClient`, React hooks etc.). Don't mix the two.
+
+## Prerequisites
+
+- Node.js 18+
+- npm, yarn, or pnpm
+- MetaMask browser extension
+- A funded testnet wallet on the chain you target
+
+## Install & run
+
 ```bash
-cd Opensea-Blockchain-Clone
+# 1. Install deps
 npm install
-```
 
-### Step 2: Run Development Server
-```bash
+# 2. Copy env template and fill in values
+cp .env.local.example .env.local
+
+# 3. Run dev server
 npm run dev
 ```
 
-### Step 3: Open Browser
-Visit: http://localhost:3000
+Then open http://localhost:3000.
 
-### Step 4: Connect Wallet
-1. Install MetaMask extension
-2. Click "Connect Wallet" button
-3. Select MetaMask
-4. Approve connection
+## Environment variables
 
-## 📋 Prerequisites
+See `.env.local.example`. The most important ones:
 
-- **Node.js** v18+ 
-- **npm** or **yarn**
-- **MetaMask** browser extension
-- Testnet network (Mumbai or Sepolia)
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID |
+| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset (usually `production`) |
+| `SANITY_TOKEN` | Optional Sanity token (only if dataset is private) |
 
-## 🔧 Tech Stack
+## Networks
 
-- **Framework:** Next.js 13
-- **Blockchain:** Thirdweb SDK v5
-- **Content:** Sanity CMS v6
-- **Styling:** Tailwind CSS
-- **UI:** React Icons
+The original code referenced Rinkeby (now decommissioned). The Thirdweb v1 SDK in this repo will use whichever network MetaMask is connected to. For testing, point MetaMask at **Sepolia** or **Polygon Mumbai** and update the contract addresses in:
 
-## 🌐 Supported Networks
+- `pages/nfts/[nftid].js` — `NFT_COLLECTION_ADDRESS`, `MARKETPLACE_ADDRESS`
+- `pages/collections/[collectionid].js` — marketplace address constant
 
-- **Mumbai Testnet** (Default)
-- **Sepolia Testnet**
+## Sanity Studio
 
-## 🔍 Troubleshooting
+The `Studio/` folder holds a Sanity v2 studio with the `users` and `marketItems` schemas. To run it:
 
-### "Module not found" errors
 ```bash
-rm -rf node_modules package-lock.json
+cd Studio
 npm install
+npm start
 ```
 
-### Wallet connection issues
-- Make sure MetaMask is installed
-- Switch to Mumbai or Sepolia network
-- Clear browser cache
+## Troubleshooting
 
-### Build errors
-```bash
-npm run build
-```
-
-## 📝 Notes
-
-- This uses Mumbai testnet by default
-- Get testnet MATIC: https://mumbaifaucet.com/
-- Get testnet ETH: https://sepoliafaucet.com/
-
-Enjoy your OpenSea clone! 🎉
+- **`npm install` fails** — delete `node_modules` and `package-lock.json`, retry.
+- **Wallet won't connect** — confirm MetaMask is installed, unlocked, and on a supported network.
+- **Image optimization errors** — add the offending hostname to the `images.domains` array in `next.config.js`.
+- **Sanity 401/403** — your token is missing or wrong; check `.env.local`.
